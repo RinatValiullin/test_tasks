@@ -2,21 +2,23 @@
 
 begin
   def gcd(a, b)
-    return a if b == 0
+    return a if b.zero?
 
     gcd(b, a % b)
   end
 
   def boundary_count(first_point, second_point)
-    if first_point[0] == second_point[0]
-      return (first_point[1] - second_point[1]).abs - 1
+    first_x_coordinate, first_y_coordinate = *first_point
+    second_x_coordinate, second_y_coordinate = *second_point
+    if first_x_coordinate == second_x_coordinate
+      return (first_y_coordinate - second_y_coordinate).abs - 1
     end
 
-    if first_point[1] == second_point[1]
-      return (first_point[0] - second_point[0]).abs - 1
+    if first_y_coordinate == second_y_coordinate
+      return (first_x_coordinate - second_x_coordinate).abs - 1
     end
 
-    gcd((first_point[0] - second_point[0]).abs, (first_point[1] - second_point[1]).abs) - 1
+    gcd((first_x_coordinate - second_x_coordinate).abs, (first_y_coordinate - second_y_coordinate).abs) - 1
   end
 
   def count(a, b)
@@ -39,10 +41,10 @@ begin
       index = after_rotate_dots.index(dot)
       value = boundary_count(after_rotate_dots[index - 1], after_rotate_dots[index + 1])
 
-      memo += value.to_i if value > 0
+      memo += value.to_i if value.positive?
     end
 
-    result = (2 * area_number - boundary_amount + 2) / 2
+    (2 * area_number - boundary_amount + 2) / 2
   end
 rescue StandardError => e
   puts(e)
